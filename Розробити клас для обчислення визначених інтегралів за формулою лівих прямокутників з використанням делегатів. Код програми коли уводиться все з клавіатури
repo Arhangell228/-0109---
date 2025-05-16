@@ -1,0 +1,49 @@
+using System;
+using System.Text;
+
+public delegate double MathFunction(double x);
+
+class IntegralCalculator
+{
+    public double CalculateIntegral(MathFunction function, double lowerLimit, double upperLimit, int rectangleCount)
+    {
+        double rectangleWidth = (upperLimit - lowerLimit) / rectangleCount;
+        double areaSum = 0.0;
+        for (int i = 0; i < rectangleCount; i++)
+        {
+            double x = lowerLimit + i * rectangleWidth;
+            areaSum += function(x);
+        }
+        return rectangleWidth * areaSum;
+    }
+}
+
+class TestMain
+{
+    public static double SquareFunction(double x)
+    {
+        return x * x;
+    }
+
+    public static void Main()
+    {
+        Console.OutputEncoding = Encoding.UTF8;
+        Console.InputEncoding = Encoding.UTF8;
+
+        Console.Write("Введіть нижню межу інтегрування (a): ");
+        double lowerLimit = Convert.ToDouble(Console.ReadLine());
+
+        Console.Write("Введіть верхню межу інтегрування (b): ");
+        double upperLimit = Convert.ToDouble(Console.ReadLine());
+
+        Console.Write("Введіть кількість прямокутників (n): ");
+        int rectangleCount = Convert.ToInt32(Console.ReadLine());
+
+        IntegralCalculator calculator = new IntegralCalculator();
+        MathFunction functionToIntegrate = new MathFunction(SquareFunction);
+
+        double integralResult = calculator.CalculateIntegral(functionToIntegrate, lowerLimit, upperLimit, rectangleCount);
+        Console.WriteLine("Наближене значення визначеного інтегралу: " + integralResult.ToString("F4"));
+    }
+}
+
